@@ -16,6 +16,16 @@ class OrdersApiView(ModelViewSet):
         else:
             return OrdersUpdateSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer =  self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            instance = serializer.save()
+            full_serializer = OrdersSerializer(instance)
+            return Response(full_serializer.data, status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         update_serializer = self.get_serializer(instance, data=request.data, partial=True)

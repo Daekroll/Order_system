@@ -1,5 +1,11 @@
 from django.db import models
 from django.core.validators import validate_email
+from rest_framework.exceptions import ValidationError
+
+
+def validate_quantity_zero(quantity):
+    if quantity <= 0:
+        raise ValidationError('This fields cannot be zero')
 
 
 class Orders(models.Model):
@@ -10,10 +16,8 @@ class Orders(models.Model):
         ('cancelled', 'cancelled')
     ]
 
-
-
     product_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Наименование продукта')
-    quantity = models.PositiveSmallIntegerField(default=1, verbose_name='Количество')
+    quantity = models.PositiveSmallIntegerField(default=1, validators=[validate_quantity_zero], verbose_name='Количество')
     customer_email = models.EmailField(max_length=255, validators=[validate_email], verbose_name='Электронная почта')
     status = models.CharField(max_length=10, default='created', choices=status_list, verbose_name='Статус заказа')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания')
