@@ -9,12 +9,27 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:14-alpine  # Используйте стабильную версию
+        env:
+          POSTGRES_DB: order_system_db
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: 1234
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.12
 
@@ -23,15 +38,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Set up PostgreSQL
-      uses: harmon758/postgresql-action@v1.0.0
-      with:
-        postgresql version: 17  # Укажите нужную версию PostgreSQL
-        postgresql db: order_system_db  # Укажите имя вашей базы данных
-        postgresql user: admin  # Укажите имя пользователя
-        postgresql password: 1234 # Укажите пароль пользователя
-
     - name: Run tests
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: order_system_db
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: 1234
       run: |
         cd order_system
         python manage.py test
