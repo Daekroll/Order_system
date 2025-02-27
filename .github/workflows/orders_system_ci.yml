@@ -13,8 +13,8 @@ jobs:
       postgres:
         image: postgres:14-alpine  # Используйте стабильную версию
         env:
-          POSTGRES_DB: order_system_db
-          POSTGRES_USER: admin
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_admin
           POSTGRES_PASSWORD: 1234
         ports:
           - 5432:5432
@@ -42,8 +42,8 @@ jobs:
       env:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: 5432
-        POSTGRES_DB: order_system_db
-        POSTGRES_USER: admin
+        POSTGRES_DB: test_db
+        POSTGRES_USER: test_admin
         POSTGRES_PASSWORD: 1234
       run: |
         cd order_system

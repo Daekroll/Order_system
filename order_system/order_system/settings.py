@@ -9,21 +9,23 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from os import getenv
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nr$l_a^l)zt)+46)0g_z^a=1)40hu@$%opj*7#9w3yyl$)7-cp'
+SECRET_KEY = getenv('DJANGO_SECRET_KEY','django-insecure-nr$l_a^l)zt)+46)0g_z^a=1)40hu@$%opj*7#9w3yyl$)7-cp')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv('DJANGO_DEBUG', True)
 
 ALLOWED_HOSTS = []
 
@@ -87,11 +89,11 @@ WSGI_APPLICATION = 'order_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'order_system_db',
-        'USER': 'admin',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'NAME': getenv('DJANGO_DB_NAME','test_db'),
+        'USER': getenv('DJANGO_DB_USER','test_admin'),
+        'PASSWORD': getenv('DJANGO_DB_PASSWORD',1234),
+        'HOST': getenv('DJANGO_DB_HOST','localhost'),
+        'PORT': getenv('DJANGO_DB_PORT',5432)
     }
 }
 
