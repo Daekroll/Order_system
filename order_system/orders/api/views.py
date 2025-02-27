@@ -1,9 +1,15 @@
+import logging
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .serializers import OrdersSerializer, OrdersCreateSerializer, OrdersUpdateSerializer
 from orders.models import Orders
+
+logger1 = logging.getLogger('console_logger')
+logger2 = logging.getLogger(file_logger)
+
 
 class OrdersApiView(ModelViewSet):
     queryset = Orders.objects.all()
@@ -22,6 +28,7 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
+            logger1.info(f'Заказ № {full_serializer.data.get('id')} создан')
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
