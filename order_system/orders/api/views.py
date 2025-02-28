@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .serializers import OrdersSerializer, OrdersCreateSerializer, OrdersUpdateSerializer
 from orders.models import Orders
-from tasks import log_order_creation, log_order_updated
+from .tasks import log_order_creation, log_order_updated
 logger1 = logging.getLogger('console_logger')
 logger2 = logging.getLogger('file_logger')
 
