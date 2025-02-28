@@ -40,6 +40,7 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
+            logger1.info(f'Статус заказа № {full_serializer.data.get('id')} изменен')
             return Response(full_serializer.data, status=status.HTTP_200_OK)
 
         return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
