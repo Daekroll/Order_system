@@ -49,8 +49,8 @@ jobs:
         pip install -r order_system/requirements.txt
 
     - name: Wait for services
-        run: |
-          sleep 15
+      run: |
+        sleep 15
 
     - name: Run tests
       env:
