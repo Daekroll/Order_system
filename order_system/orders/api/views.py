@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .serializers import OrdersSerializer, OrdersCreateSerializer, OrdersUpdateSerializer
 from orders.models import Orders
-
+from tasks import log_order_creation, log_order_updated
 logger1 = logging.getLogger('console_logger')
 logger2 = logging.getLogger('file_logger')
 
@@ -28,6 +28,7 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
+            log_order_creation.delay(full_serializer.data.get('id'))
             logger1.info(f'Заказ № {full_serializer.data.get('id')} создан')
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
@@ -40,6 +41,7 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
+            log_order_updated.delay(full_serializer.data.get('id'))
             logger1.info(f'Статус заказа № {full_serializer.data.get('id')} изменен')
             return Response(full_serializer.data, status=status.HTTP_200_OK)
 
