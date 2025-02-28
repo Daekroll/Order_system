@@ -28,8 +28,8 @@ class OrdersApiView(ModelViewSet):
             serializer.save()
             instance = serializer.save()
             full_serializer = OrdersSerializer(instance)
-            log_order_creation.delay(full_serializer.data.get('id'))
-            logger1.info(f'Заказ № {full_serializer.data} создан')
+            log_order_creation.delay(full_serializer.data)
+            logger1.info(f'Заказ № {full_serializer.data.get('id')} создан')
             return Response(full_serializer.data, status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
@@ -41,8 +41,8 @@ class OrdersApiView(ModelViewSet):
         if update_serializer.is_valid():
             update_serializer.save()
             full_serializer = OrdersSerializer(instance)
-            log_order_updated.delay(full_serializer.data.get('id'))
-            logger1.info(f'Статус заказа № {full_serializer.data} изменен')
+            log_order_updated.delay(full_serializer.data)
+            logger1.info(f'Статус заказа № {full_serializer.data.get('id')} изменен')
             return Response(full_serializer.data, status=status.HTTP_200_OK)
 
         return Response(update_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

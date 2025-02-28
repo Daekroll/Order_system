@@ -197,8 +197,8 @@ dictConfig(logging_config)
 # Настройки для отправки писем через Gmail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'test-development@mail.ru'  # Ваш email
-EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD','Daekro!!')  # Пароль от почты или пароль приложения (для Gmail)
+EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD','1234')  # Пароль от почты или пароль приложения (для Gmail)
 DEFAULT_FROM_EMAIL = 'test-development@mail.ru'  # Email, который будет указан как отправитель
