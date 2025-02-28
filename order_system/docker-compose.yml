@@ -8,6 +8,9 @@ services:
       - PYTHONPATH=/app
     depends_on:
       - db
+    volumes:
+      - static_volume:/app/static
+
 
   db:
     image: postgres:latest
@@ -25,9 +28,11 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./static:/app/static
+      - static_volume:/app/static
+
     depends_on:
-      - web
+      - django_app
 
 volumes:
   postgres_data:
+  static_volume:

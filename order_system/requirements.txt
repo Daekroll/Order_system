@@ -15,6 +15,7 @@ kombu==5.4.2
 packaging==24.2
 prompt_toolkit==3.0.50
 psycopg==3.2.5
+psycopg-binary==3.2.5
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 redis==5.2.1
