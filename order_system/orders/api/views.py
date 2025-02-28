@@ -8,7 +8,7 @@ from .serializers import OrdersSerializer, OrdersCreateSerializer, OrdersUpdateS
 from orders.models import Orders
 
 logger1 = logging.getLogger('console_logger')
-logger2 = logging.getLogger(file_logger)
+logger2 = logging.getLogger('file_logger')
 
 
 class OrdersApiView(ModelViewSet):
