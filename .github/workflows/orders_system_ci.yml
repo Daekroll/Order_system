@@ -62,3 +62,9 @@ jobs:
       run: |
         cd order_system
         python manage.py test
+
+    - name: Run tests tasks
+      run: |
+        pip install pytest pytest-celery
+        cd order_system
+        pytest
