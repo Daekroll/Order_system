@@ -146,6 +146,10 @@ CELERY_RESULT_BACKEND = getenv('REDIS_HOST','redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
+logs_dir = os.path.join(BASE_DIR, 'logs')
+if not os.path.exists(logs_dir):
+    os.makedirs(logs_dir)
+
 logging_config = {
     'version': 1,
     'formatters': {
