@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_filters',
 
     'orders.apps.OrdersConfig',
 ]
@@ -81,22 +82,20 @@ WSGI_APPLICATION = 'order_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': getenv('DJANGO_DB_NAME','test_db'),
-        'USER': getenv('DJANGO_DB_USER','test_admin'),
-        'PASSWORD': getenv('DJANGO_DB_PASSWORD',1234),
-        'HOST': getenv('DJANGO_DB_HOST','localhost'),
-        'PORT': getenv('DJANGO_DB_PORT',5432)
+        'NAME': getenv('POSTGRES_NAME_DB','test_db'),
+        'USER': getenv('POSTGRES_USER_NAME','test_admin'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD',1234),
+        'HOST': getenv('POSTGRES_HOST','localhost'),
+        'PORT': getenv('POSTGRES_PORT',5432)
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,  # Количество объектов на страницу
 }
 
 # Password validation
@@ -142,8 +141,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = getenv('CELERY_BROKER_URL','redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = getenv('CELERY_RESULT_BACKEND','redis://localhost:6379/0')
+CELERY_BROKER_URL = getenv('REDIS_HOST','redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = getenv('REDIS_HOST','redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
@@ -166,7 +165,7 @@ logging_config = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'order_app.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'order_app.log'),
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 5,
             'encoding': 'utf8'
@@ -199,6 +198,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'test-development@mail.ru'  # Ваш email
-EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD','Daekro!!')  # Пароль от почты или пароль приложения (для Gmail)
-DEFAULT_FROM_EMAIL = 'test-development@mail.ru'  # Email, который будет указан как отправитель
+EMAIL_HOST_USER = getenv('EMAIL_USER', 'test@mail.ru')  # Ваш email
+EMAIL_HOST_PASSWORD = getenv('EMAIL_PASSWORD','Daekro!!')  # Пароль от почты или пароль приложения (для Gmail)
+DEFAULT_FROM_EMAIL = getenv('EMAIL_USER', 'test@mail.ru')  # Email, который будет указан как отправитель

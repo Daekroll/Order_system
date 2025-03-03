@@ -33,7 +33,7 @@ class OrdersApiView_Test_Case(TestCase):
 
     def test_get_all_orders(self):
         response = self.client.get(reverse('orders:orders-list'))
-        response_data = response.json()
+        response_data = response.json().get('results')
         status_order_1 = response_data[0].get('status')
         email = response_data[1].get('customer_email')
 

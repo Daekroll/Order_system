@@ -4,11 +4,39 @@ from rest_framework.exceptions import ValidationError
 
 
 def validate_quantity_zero(quantity):
+    """
+    Валидатор для проверки, что значение количества не равно нулю или меньше.
+
+    Args:
+        quantity (int): Количество товара.
+
+    Raises:
+        ValidationError: Если количество меньше или равно нулю.
+    """
     if quantity <= 0:
         raise ValidationError('This fields cannot be zero')
 
 
 class Orders(models.Model):
+    """
+    Модель, представляющая заказ.
+
+    Атрибуты:
+        status_list (list): Список возможных статусов заказа.
+        product_name (CharField): Наименование продукта (максимум 30 символов).
+        quantity (PositiveSmallIntegerField): Количество товара (по умолчанию 1, не может быть нулевым или отрицательным).
+        customer_email (EmailField): Электронная почта покупателя (валидируется на корректность).
+        status (CharField): Статус заказа (по умолчанию 'created').
+        created_at (DateTimeField): Дата и время создания заказа (автоматически добавляется при создании).
+        update_at (DateTimeField): Дата и время обновления заказа (автоматически обновляется при изменении).
+
+    Мета:
+        verbose_name (str): Человекочитаемое имя модели в единственном числе.
+        verbose_name_plural (str): Человекочитаемое имя модели во множественном числе.
+
+    Методы:
+        __str__: Возвращает строковое представление заказа в формате "Order id: {id}, product: {product_name}".
+    """
     status_list = [
         ('created', 'created'),
         ('processing', 'processing'),
